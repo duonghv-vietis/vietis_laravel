@@ -11,7 +11,7 @@ import child from './childComponent.vue'
 
 export default {
   components : {
-      child,
+    child,
   },
 
   data () {

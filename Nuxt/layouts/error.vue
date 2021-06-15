@@ -1,13 +1,29 @@
 <template>
-  <div class="container">
-    <h1 v-if="error.statusCode === 404">Page not found</h1>
-    <h1 v-else>An error occurred</h1>
-    <NuxtLink to="/">Home page</NuxtLink>
-  </div>
+  <center>
+    <h1>Not Found!</h1>
+    <p>
+      <a href="/">Go home?</a>
+    </p>
+  </center>
 </template>
 
 <script>
-export default {
-  props: ['error'],
-}
+
+  export default {
+    name: 'NotFound'
+  }
+
 </script>
+
+<style scoped>
+
+  center {
+    margin: 15vw;
+  }
+
+  h1 {
+    color: var(--border);
+    font-size: 2em;
+  }
+
+</style>

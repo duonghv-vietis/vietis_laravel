@@ -14,10 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function() {
+    Route::get('/posts/search', 'PostsController@searchPosts')->name('posts.search');
+
+    Route::resource('posts', 'PostsController');
 });
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api\V1'], function() {
-    Route::resource('posts', 'PostsController');
+
+Route::group(['prefix' => 'v1/auth', 'namespace' => 'Api\v1\Auth'], function () {
+    Route::post('/register', 'AuthController@register')->name('register');
+    Route::post('/login', 'AuthController@login')->name('login');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('/logout', 'AuthController@logout')->name('logout');
+        Route::get('/user', 'AuthController@me')->name('me');
+    });
 });

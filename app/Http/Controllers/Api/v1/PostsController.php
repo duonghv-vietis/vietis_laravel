@@ -12,9 +12,10 @@ use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Contracts\Repositories\PostRepository;
 use App\Validators\PostValidator;
+use App\Models\Post;
 
 /**
- * Class PostsController.
+ * Class PostsController.1
  *
  * @package namespace App\Http\Controllers\Api;
  */
@@ -42,11 +43,10 @@ class PostsController extends Controller
      */
     public function index()
     {
-
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $posts = $this->repository->all();
+        $posts = $this->repository->paginate(10);
 
-        return $posts;
+        return response()->json($posts);
     }
 
     /**
@@ -68,13 +68,6 @@ class PostsController extends Controller
             ];
 
             return response()->json($response);
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
         } catch (ValidatorException $e) {
             return redirect()->back()->withErrors($e->getMessageBag())->withInput();
         }
@@ -89,9 +82,12 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = $this->repository->find($id);
-
-        return $post;
+        $post = Post::findOrFail($id);
+        if ($post) {
+            return $post->toArray();
+        } else {
+            return '';
+        }
     }
 
     /**
@@ -105,7 +101,7 @@ class PostsController extends Controller
     {
         $post = $this->repository->find($id);
 
-        return view('posts.edit', compact('post'));
+        //
     }
 
     /**
@@ -126,6 +122,7 @@ class PostsController extends Controller
 
             $response = [
                 'message' => 'Post updated.',
+                'edited' => true,
                 'data'    => $post->toArray(),
             ];
 
@@ -151,6 +148,18 @@ class PostsController extends Controller
         return response()->json([
             'message' => 'Post deleted.',
             'deleted' => $deleted,
+        ]);
+    }
+
+    public function searchPosts(Request $request) {
+        $data = $request->get('data');
+
+        $posts = Post::where('title', 'like', "%{$data}%")
+                    ->orWhere('author', 'like', "%{$data}%")
+                    ->get();
+
+        return response()->json([
+            'data' => $posts->toArray()
         ]);
     }
 }

@@ -1,17 +1,30 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  
   head: {
-    title: 'Nuxt',
+    title: 'New Line',
+    titleTemplate: 'New Line application | %s',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'en',
+      amp: true
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content:
+      'The amazing appication'
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+
+    script: [
+      {
+        src: '',
+        async: true,
+        defer: true
+      }
     ]
   },
 
@@ -38,11 +51,15 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    'nuxt-element-ui'
+
   ],
 
+  router: {
+    // middleware: ['auth']
+  },
+
   axios: {
-    baseURL: "http://127.0.0.1:8000/api/v1/",
+    baseURL: "http://127.0.0.1:8000/api/v1",
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

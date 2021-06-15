@@ -78,7 +78,7 @@
               Vue.notify({
                 group: 'foo',
                 title: 'Thành công',
-                text: 'Đã sửa bài viết'
+                text: 'Sửa bài viết thành công !'
               })
               window.history.back();
             });
